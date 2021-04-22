@@ -15,6 +15,10 @@ export const theme = extendTheme({
       "50": "#eeeef2",
     },
   },
+  fonts: {
+    heading: "Roboto", // fonte dos cabeçarios h1, h2, h3,...
+    body: "Roboto", //fonte do corpo, todos os textos da aplicação
+  },
   styles: {
     global: {
       body: {
