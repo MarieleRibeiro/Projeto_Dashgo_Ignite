@@ -29,7 +29,7 @@ export function makeServer() {
     }, // são formas de a gente consegui gerar dados em massa
 
     seeds(server) {
-      server.createList("user", 200); // vai criar automatizada 200 usuarios
+      server.createList("user", 10); // vai criar automatizada 200 usuarios
     },
 
     routes() {
