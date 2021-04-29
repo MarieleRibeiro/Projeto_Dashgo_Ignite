@@ -25,26 +25,33 @@ import { useQuery } from "react-query";
 
 export default function UserList() {
   // primeiro preciso passar um nome para essa query, esse nome é uma chave de como ela será armazenada no chash
-  const { data, isLoading, error } = useQuery("users", async () => {
-    // segundo parametro eu passo um metodo, que é uma função que vai retornar os dados
-    const response = await fetch("http://localhost:3000/api/users");
-    const data = await response.json();
+  const { data, isLoading, error } = useQuery(
+    "users",
+    async () => {
+      // segundo parametro eu passo um metodo, que é uma função que vai retornar os dados
+      const response = await fetch("http://localhost:3000/api/users");
+      const data = await response.json();
 
-    const users = data.users.map((user) => {
-      return {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        createdAt: new Date(user.createdAt).toLocaleDateString("pt-BR", {
-          day: "2-digit",
-          month: "long",
-          year: "numeric",
-        }),
-      };
-    });
+      const users = data.users.map((user) => {
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          createdAt: new Date(user.createdAt).toLocaleDateString("pt-BR", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+          }),
+        };
+      });
 
-    return users;
-  });
+      return users;
+    },
+    {
+      staleTime: 1000 * 5, // 5 segundos
+      //terceiro parametro, passo o tempo que os dados precisam ser recarregados
+    }
+  );
 
   const isWideVersion = useBreakpointValue({
     base: false,
