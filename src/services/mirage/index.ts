@@ -1,4 +1,5 @@
-import { createServer, Model } from "miragejs";
+import { createServer, Factory, Model } from "miragejs";
+import faker from "faker";
 
 type User = {
   name: string;
@@ -11,6 +12,24 @@ export function makeServer() {
     // quais dados eu quero armazenar dentro do meu banco de dados ficticío que o mirage cria
     models: {
       user: Model.extend<Partial<User>>({}),
+    },
+
+    factories: {
+      user: Factory.extend({
+        name(i: number) {
+          return `User ${i + 1}`;
+        },
+        email() {
+          return faker.internet.email().toLowerCase();
+        },
+        createdAt() {
+          return faker.date.recent(10);
+        },
+      }),
+    }, // são formas de a gente consegui gerar dados em massa
+
+    seeds(server) {
+      server.createList("user", 200); // vai criar automatizada 200 usuarios
     },
 
     routes() {
@@ -30,3 +49,5 @@ export function makeServer() {
 }
 
 // -> Partial = usa quando eu não preciso usar todos os campos do meu type
+
+// -> bibliotaca do javascript FAKER(yarn add faker)= biblioteca de geração de dados ficticios
