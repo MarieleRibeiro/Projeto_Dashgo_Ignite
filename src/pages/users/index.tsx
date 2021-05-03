@@ -17,15 +17,16 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 
-import { RiAddLine, RiPencilLine } from "react-icons/ri";
+import { RiAddLine } from "react-icons/ri";
 import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
 import { Sidebar } from "../../components/Sidebar";
 import { useQuery } from "react-query";
 
 export default function UserList() {
-  // primeiro preciso passar um nome para essa query, esse nome é uma chave de como ela será armazenada no chash
-  const { data, isLoading, error } = useQuery(
+  // primeiro preciso passar um nome para essa query, esse nome é uma chave de como ela será armazenada no cash
+  // -> isFetching = sinaliza se esta sendo realizado a renovação dos dados ou não
+  const { data, isLoading, isFetching, error } = useQuery(
     "users",
     async () => {
       // segundo parametro eu passo um metodo, que é uma função que vai retornar os dados
@@ -68,6 +69,9 @@ export default function UserList() {
           <Flex mb="8" justify="space-between" align="center">
             <Heading size="lg" fontWeight="normal">
               Usuários
+              {!isLoading && isFetching && (
+                <Spinner size="sm" color="gray.500" ml="4" />
+              )}
             </Heading>
             <Link href="/users/create" passHref>
               <Button
