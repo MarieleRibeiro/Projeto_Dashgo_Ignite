@@ -1,4 +1,4 @@
-import { createServer, Factory, Model } from "miragejs";
+import { createServer, Factory, Model, Response } from "miragejs";
 import faker from "faker";
 
 type User = {
@@ -29,14 +29,28 @@ export function makeServer() {
     }, // são formas de a gente consegui gerar dados em massa
 
     seeds(server) {
-      server.createList("user", 10); // vai criar automatizada 200 usuarios
+      server.createList("user", 200); // vai criar automatizada 200 usuarios
     },
 
     routes() {
       this.namespace = "api";
       this.timing = 750; //toda chamada feita pra api demore 750
 
-      this.get("/users"); //(Shorthands)
+      this.get("/users", function (schema, request) {
+        const { page = 1, per_page = 10 } = request.queryParams;
+
+        const total = schema.all("user").length;
+
+        const pageStart = (Number(page) - 1) * Number(per_page); // ex: 3-1= 2x10 = vai começar no 20
+        const pageEnd = pageStart + Number(per_page); // ex: 20 + 10= 30
+
+        const users = this.serialize(schema.all("user")).users.slice(
+          pageStart,
+          pageEnd
+        );
+
+        return new Response(200, { "x-total-count": String(total) }, { users });
+      }); //(Shorthands)
       this.post("/post");
 
       this.namespace = "";
