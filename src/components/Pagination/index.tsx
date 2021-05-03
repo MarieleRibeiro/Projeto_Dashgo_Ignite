@@ -5,7 +5,7 @@ interface PaginationProps {
   totalCountOfRegisters: number;
   registersPerPage: number;
   currentPage?: number;
-  onPageChance?: (page: number) => void;
+  onPageChange?: (page: number) => void;
 }
 
 const siblingsCount = 1; // quantas paginas irmãs eu quero mostrar/ antes e depois
@@ -22,7 +22,7 @@ export function Pagination({
   totalCountOfRegisters,
   registersPerPage = 10,
   currentPage = 1,
-  onPageChance,
+  onPageChange,
 }: PaginationProps) {
   const lastpage = Math.floor(totalCountOfRegisters / registersPerPage);
 
@@ -53,7 +53,7 @@ export function Pagination({
       <Stack direction="row" spacing="2">
         {currentPage > 1 + siblingsCount && (
           <>
-            <PaginationItem number={1} />
+            <PaginationItem onPageChange={onPageChange} number={1} />
             {currentPage > 2 + siblingsCount && (
               <Text color="gray.300" width="8" textAlign="center">
                 ...
@@ -64,14 +64,30 @@ export function Pagination({
 
         {previousPages.length > 0 &&
           previousPages.map((page) => {
-            return <PaginationItem key={page} number={page} />;
+            return (
+              <PaginationItem
+                onPageChange={onPageChange}
+                key={page}
+                number={page}
+              />
+            );
           })}
 
-        <PaginationItem number={currentPage} isCurrent />
+        <PaginationItem
+          onPageChange={onPageChange}
+          number={currentPage}
+          isCurrent
+        />
 
         {nextPages.length > 0 &&
           nextPages.map((page) => {
-            return <PaginationItem key={page} number={page} />;
+            return (
+              <PaginationItem
+                onPageChange={onPageChange}
+                key={page}
+                number={page}
+              />
+            );
           })}
 
         {currentPage + siblingsCount < lastpage && (
@@ -81,10 +97,12 @@ export function Pagination({
                 ...
               </Text>
             )}
-            <PaginationItem number={lastpage} />
+            <PaginationItem onPageChange={onPageChange} number={lastpage} />
           </>
         )}
       </Stack>
     </Stack>
   );
 }
+
+// -> Prop Drilling => consiste em repassar uma prop de um componente do pai pro filho e do filho para outros filhos

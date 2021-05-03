@@ -16,6 +16,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { useState } from "react";
 
 import { RiAddLine } from "react-icons/ri";
 import { Header } from "../../components/Header";
@@ -25,9 +26,10 @@ import { Sidebar } from "../../components/Sidebar";
 import { useUsers } from "../../services/hooks/useUsers";
 
 export default function UserList() {
+  const [page, setPage] = useState(1);
   // primeiro preciso passar um nome para essa query, esse nome é uma chave de como ela será armazenada no cash
   // -> isFetching = sinaliza se esta sendo realizado a renovação dos dados ou não
-  const { data, isLoading, isFetching, error } = useUsers();
+  const { data, isLoading, isFetching, error } = useUsers(page);
 
   const isWideVersion = useBreakpointValue({
     base: false,
@@ -82,7 +84,7 @@ export default function UserList() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {data.map((user) => {
+                  {data.users.map((user) => {
                     return (
                       <Tr key={user.id}>
                         <Td px={["4", "4", "6"]}>
@@ -104,9 +106,9 @@ export default function UserList() {
               </Table>
               <Pagination
                 registersPerPage={20}
-                totalCountOfRegisters={200}
-                currentPage={5}
-                onPageChance={() => {}}
+                totalCountOfRegisters={data.totalCount}
+                currentPage={page}
+                onPageChange={setPage}
               />
             </>
           )}
