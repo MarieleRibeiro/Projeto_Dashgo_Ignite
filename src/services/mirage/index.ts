@@ -1,4 +1,10 @@
-import { createServer, Factory, Model, Response } from "miragejs";
+import {
+  ActiveModelSerializer,
+  createServer,
+  Factory,
+  Model,
+  Response,
+} from "miragejs";
 import faker from "faker";
 
 type User = {
@@ -9,6 +15,9 @@ type User = {
 
 export function makeServer() {
   const server = createServer({
+    serializers: {
+      application: ActiveModelSerializer, // consigo enviar os dados, enviar os relacionamentos tudo numa requisição só, não vale so para envio mas tambem para recebimento
+    },
     // quais dados eu quero armazenar dentro do meu banco de dados ficticío que o mirage cria
     models: {
       user: Model.extend<Partial<User>>({}),

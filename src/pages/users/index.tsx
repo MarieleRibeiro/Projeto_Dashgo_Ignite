@@ -38,7 +38,7 @@ export default function UserList() {
     lg: true,
   });
 
-  async function handlePrefetchUser(userId: number) {
+  async function handlePrefetchUser(userId: string) {
     await queryClient.prefetchQuery(
       ["user", userId], //primeiro parametro passo os mesmos parametros que passo no useQuery-> qual chave que eu quero realizar o prefetch
       async () => {
