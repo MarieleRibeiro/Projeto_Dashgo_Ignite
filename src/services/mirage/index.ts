@@ -51,6 +51,7 @@ export function makeServer() {
 
         return new Response(200, { "x-total-count": String(total) }, { users });
       }); //(Shorthands)
+      this.get("/users/:id");
       this.post("/post");
 
       this.namespace = "";
